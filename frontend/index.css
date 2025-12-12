@@ -223,6 +223,12 @@ body {
   box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
 }
 
+.btn-danger img {
+  width: 20px;
+  height: 20px;
+  filter: currentColor;
+}
+
 .btn-control {
   background: rgba(255, 255, 255, 0.9);
   border: 2px solid #e1e5e9;

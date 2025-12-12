@@ -76,32 +76,32 @@ const startConversation = async (req, res) => {
           input_modalities: ["text"],
           output_modalities: ["text"]
         },
-        // tts: {
-        //   vendor: process.env.TTS_VENDOR || "microsoft",
-        //   params: {
-        //     key: process.env.TTS_API_KEY,
-        //     region: process.env.TTS_REGION || "japanwest",
-        //     voice_name: process.env.TTS_VOICE || "zh-CN-XiaoxiaoMultilingualNeural",
-        //     enable_words: false // send agent transcription even if tts fails
-        //   },
-        //   skipPatterns: [1, 2, 3, 4, 5, 6]
-        // },
         tts: {
-          vendor: "cartesia",
+          vendor: process.env.TTS_VENDOR || "microsoft",
           params: {
-            api_key: process.env.CARTESIA_API_KEY,
-            model_id: "sonic-3",
-            voice: { 
-              mode: "id",
-              id: process.env.CARTESIA_VOICE_ID
-            },
-            output_format: { 
-              container: "raw",
-              sample_rate: 16000
-            },
-            language: "en"
-          }
+            key: process.env.TTS_API_KEY,
+            region: process.env.TTS_REGION || "japanwest",
+            voice_name: process.env.TTS_VOICE || "zh-CN-XiaoxiaoMultilingualNeural",
+            enable_words: false // send agent transcription even if tts fails
+          },
+          skipPatterns: [1, 2, 3, 4, 5, 6]
         },
+        // tts: {
+        //   vendor: "cartesia",
+        //   params: {
+        //     api_key: process.env.CARTESIA_API_KEY,
+        //     model_id: "sonic-3",
+        //     voice: { 
+        //       mode: "id",
+        //       id: process.env.CARTESIA_VOICE_ID
+        //     },
+        //     output_format: { 
+        //       container: "raw",
+        //       sample_rate: 16000
+        //     },
+        //     language: "en"
+        //   }
+        // },
         avatar: {
           vendor: "akool",
           enable: true,

@@ -20,7 +20,6 @@ app.use('/lib', express.static(path.join(__dirname, '../node_modules'), {
 }));
 
 app.use('/api/agora', agoraRoutes);
-app.use('/api/avatar', avatarRoutes);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
