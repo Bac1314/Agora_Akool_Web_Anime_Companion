@@ -1,0 +1,32 @@
+{
+  "name": "agora-akool-anime-companion",
+  "version": "1.0.0",
+  "description": "AI Anime Companion Demo with Agora ConvoAI and Akool Avatar",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "build": "echo 'No build step required for vanilla JS frontend'",
+    "test": "echo 'No tests specified'"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "keywords": [
+    "agora",
+    "akool",
+    "avatar",
+    "conversational-ai",
+    "webrtc",
+    "anime",
+    "chat"
+  ],
+  "author": "Bac Cheng Huang",
+  "license": "MIT"
+}

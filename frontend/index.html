@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>AI Anime Companion</title>
+  <link rel="stylesheet" href="../src/libs/bootstrap.min.css">
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="title">AI Anime Companion</h1>
+      <p class="subtitle">Your virtual companion powered by Agora ConvoAI</p>
+    </header>
+
+    <!-- Main Interface -->
+    <main class="main-interface">
+      <!-- Avatar Display Area -->
+      <div class="avatar-section">
+        <div id="avatar-container" class="avatar-container">
+          <div id="avatar-placeholder" class="avatar-placeholder">
+            <div class="avatar-icon">🎭</div>
+            <p>Your AI companion will appear here</p>
+          </div>
+          <div id="avatar-video" class="avatar-video" style="display: none;"></div>
+        </div>
+        
+        <!-- Status Indicator -->
+        <div id="connection-status" class="connection-status">
+          <span class="status-dot offline"></span>
+          <span class="status-text">Offline</span>
+        </div>
+      </div>
+
+      <!-- Control Panel -->
+      <div class="control-panel">
+        <!-- Connection Form -->
+        <div id="connection-form" class="connection-form">
+          <div class="form-group">
+            <label for="channel-input">Channel Name</label>
+            <input type="text" id="channel-input" placeholder="Enter channel name" value="anime-companion-demo">
+          </div>
+          
+          <div class="form-group">
+            <label for="companion-name">Companion Name</label>
+            <input type="text" id="companion-name" placeholder="Enter companion name" value="Emma">
+          </div>
+
+          <button id="start-btn" class="btn btn-primary">
+            <span class="btn-icon">▶️</span>
+            Start Conversation
+          </button>
+        </div>
+
+        <!-- Active Conversation Controls -->
+        <div id="conversation-controls" class="conversation-controls" style="display: none;">
+          <div class="audio-controls">
+            <button id="mic-btn" class="btn btn-control active">
+              <img src="../src/assets/microphone.svg" alt="Microphone">
+            </button>
+            <button id="camera-btn" class="btn btn-control active">
+              <img src="../src/assets/webcam.svg" alt="Camera">
+            </button>
+          </div>
+          
+          <button id="end-btn" class="btn btn-danger">
+            <img src="../src/assets/end.svg" alt="End Call">
+            End Conversation
+          </button>
+        </div>
+
+        <!-- Local Video Preview -->
+        <div id="local-video-container" class="local-video-container" style="display: none;">
+          <div id="local-video" class="local-video"></div>
+          <p class="video-label">You</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Demo powered by <strong>Agora ConvoAI</strong> + <strong>Akool Avatar</strong></p>
+    </footer>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p id="loading-text">Connecting to your AI companion...</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../src/libs/jquery-3.4.1.min.js"></script>
+  <script src="../src/libs/bootstrap.bundle.min.js"></script>
+  <script src="../src/libs/AgoraRTC_N-4.24.1.js"></script>
+  <script src="./index.js"></script>
+</body>
+</html>
