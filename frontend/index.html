@@ -55,6 +55,12 @@
           </button>
         </div>
 
+        <!-- Local Video Preview -->
+        <div id="local-video-container" class="local-video-container" style="display: none;">
+          <div id="local-video" class="local-video"></div>
+          <p class="video-label">You</p>
+        </div>
+
         <!-- Active Conversation Controls -->
         <div id="conversation-controls" class="conversation-controls" style="display: none;">
           <div class="audio-controls">
@@ -70,12 +76,6 @@
             </button>
           </div>
 
-        </div>
-
-        <!-- Local Video Preview -->
-        <div id="local-video-container" class="local-video-container" style="display: none;">
-          <div id="local-video" class="local-video"></div>
-          <p class="video-label">You</p>
         </div>
       </div>
     </main>
@@ -97,7 +97,8 @@
   <!-- Scripts -->
   <script src="../src/libs/jquery-3.4.1.min.js"></script>
   <script src="../src/libs/bootstrap.bundle.min.js"></script>
-  <script src="../src/libs/AgoraRTC_N-4.24.1.js"></script>
+  <script src="/lib/agora-rtc-sdk-ng/AgoraRTC_N-production.js"></script>
+  <script src="/lib/agora-rtm-sdk/agora-rtm.js"></script>
   <script src="./index.js"></script>
 </body>
 </html>

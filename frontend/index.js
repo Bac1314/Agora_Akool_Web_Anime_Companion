@@ -60,7 +60,8 @@ class AnimeCompanion {
     this.client.on("user-unpublished", (user, mediaType) => this.handleUserUnpublished(user, mediaType));
     this.client.on("user-joined", (user) => this.handleUserJoined(user));
     this.client.on("user-left", (user) => this.handleUserLeft(user));
-    
+    this.client.on("stream-message", (uid, payload) => this.handleStreamMessage(uid, payload));
+
     // Form submission
     this.elements.startBtn.closest('form')?.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -354,6 +355,11 @@ class AnimeCompanion {
       this.elements.avatarVideo.style.display = 'none';
       this.elements.avatarPlaceholder.style.display = 'flex';
     }
+  }
+
+  handleStreamMessage(uid, payload) {
+    console.log('Stream message from', uid, payload);
+    // Handle incoming stream messages if needed
   }
   
   updateConnectionStatus(status, text) {

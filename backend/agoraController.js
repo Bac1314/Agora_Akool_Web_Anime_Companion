@@ -65,10 +65,10 @@ const startConversation = async (req, res) => {
           system_messages: [
             {
               role: "system",
-              content: process.env.LLM_SYSTEM_PROMPT || "You are a friendly AI anime girlfriend. Respond naturally in a caring, playful manner. Keep responses brief and conversational since this is voice-to-voice communication. Avoid long paragraphs and speak as if having a real conversation. Only output plain text responses, without any markdown, HTML tags, or emojis."
+              content: process.env.LLM_SYSTEM_PROMPT || "You are a friendly AI anime companion. Respond naturally in a caring, playful manner. Keep responses brief and conversational since this is voice-to-voice communication. Avoid long paragraphs and speak as if having a real conversation. Only output plain text responses, without any markdown, HTML tags, or emojis."
             }
           ],
-          greeting_message: "Hi there! I'm your AI anime girlfriend. How can I make your day better?",
+          greeting_message: "Hi there! I'm your AI anime companion. How can I make your day better?",
           failure_message: "Sorry, I'm having some trouble right now. Let me try again!",
           params: {
             model: process.env.LLM_MODEL || "gpt-4o-mini"
@@ -77,11 +77,11 @@ const startConversation = async (req, res) => {
           output_modalities: ["text"]
         },
         tts: {
-          vendor: process.env.TTS_VENDOR || "microsoft",
+          vendor: process.env.MICROSOFT_TTS_VENDOR || "microsoft",
           params: {
-            key: process.env.TTS_API_KEY,
-            region: process.env.TTS_REGION || "japanwest",
-            voice_name: process.env.TTS_VOICE || "zh-CN-XiaoxiaoMultilingualNeural",
+            key: process.env.MICROSOFT_TTS_API_KEY,
+            region: process.env.MICROSOFT_TTS_REGION || "japanwest",
+            voice_name: process.env.MICROSOFT_TTS_VOICE || "zh-CN-XiaoxiaoMultilingualNeural",
             enable_words: false // send agent transcription even if tts fails
           },
           skipPatterns: [1, 2, 3, 4, 5, 6]
@@ -89,11 +89,11 @@ const startConversation = async (req, res) => {
         // tts: {
         //   vendor: "cartesia",
         //   params: {
-        //     api_key: process.env.CARTESIA_API_KEY,
+        //     api_key: process.env.CARTESIA_TTS_API_KEY,
         //     model_id: "sonic-3",
         //     voice: { 
         //       mode: "id",
-        //       id: process.env.CARTESIA_VOICE_ID
+        //       id: process.env.CARTESIA_TTS_VOICE_ID
         //     },
         //     output_format: { 
         //       container: "raw",
@@ -109,19 +109,19 @@ const startConversation = async (req, res) => {
             api_key: process.env.AKOOL_API_KEY,
             quality: "medium",
             agora_uid: avatarUid.toString(), 
-            avatar_id: process.env.AKOOL_AVATAR_ID || "dvp_Emma_agora"
+            avatar_id: process.env.AKOOL_AVATAR_ID || "dvp_Alinna_emotionsit_agora"
           }
         },
         advanced_features: {
           enable_aivad: true,
           enable_bhvs: true,
-          enable_rtm: true
+          enable_rtm: false
         },
         parameters: {
-          data_channel: "rtm",
-          transcript: {
-            redundant: false
-          }
+          data_channel: "datastream"
+          // transcript: {
+          //   redundant: false
+          // }
         }
       }
     };
