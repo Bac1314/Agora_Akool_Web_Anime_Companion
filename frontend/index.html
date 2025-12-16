@@ -70,6 +70,9 @@
             <button id="camera-btn" class="btn btn-control active">
               <img src="../src/assets/webcam.svg" alt="Camera">
             </button>
+            <button id="transcript-btn" class="btn btn-control">
+              💬
+            </button>
             <button id="end-btn" class="btn btn-danger">
               <img src="../src/assets/end.svg" alt="End Call">
               End
@@ -86,6 +89,26 @@
     </footer>
   </div>
 
+  <!-- Transcript Overlay -->
+  <div id="transcript-overlay" class="transcript-overlay" style="display: none;">
+    <div class="transcript-popup">
+      <div class="transcript-header">
+        <h3>Conversation Transcript</h3>
+        <div class="transcript-header-controls">
+          <button id="clear-transcript-btn" class="btn btn-sm btn-secondary">Clear</button>
+          <button id="close-transcript-btn" class="btn btn-sm">✕</button>
+        </div>
+      </div>
+      
+      <div id="transcript-messages" class="transcript-messages"></div>
+      
+      <div class="transcript-input-container">
+        <input type="text" id="transcript-input" placeholder="Type a message to AI...">
+        <button id="send-transcript-btn" class="btn btn-primary">Send</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Loading Overlay -->
   <div id="loading-overlay" class="loading-overlay" style="display: none;">
     <div class="loading-spinner">
@@ -99,6 +122,7 @@
   <script src="../src/libs/bootstrap.bundle.min.js"></script>
   <script src="/lib/agora-rtc-sdk-ng/AgoraRTC_N-production.js"></script>
   <script src="/lib/agora-rtm-sdk/agora-rtm.js"></script>
+  <script src="./utils/transcript.js"></script>
   <script src="./index.js"></script>
 </body>
 </html>

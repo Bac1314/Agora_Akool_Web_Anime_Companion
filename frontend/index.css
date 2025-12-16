@@ -146,6 +146,200 @@ body {
   height: fit-content;
 }
 
+/* Transcript Overlay */
+.transcript-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.transcript-popup {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.transcript-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e1e5e9;
+}
+
+.transcript-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #333;
+  font-weight: 700;
+}
+
+.transcript-header-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  min-height: auto;
+  border-radius: 8px;
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #666;
+  border: 1px solid #e1e5e9;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #e9ecef;
+  transform: translateY(-1px);
+}
+
+.transcript-messages {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 50vh;
+  padding-right: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.transcript-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.transcript-messages::-webkit-scrollbar-track {
+  background: #f1f3f4;
+  border-radius: 10px;
+}
+
+.transcript-messages::-webkit-scrollbar-thumb {
+  background: #c1c7cd;
+  border-radius: 10px;
+}
+
+.transcript-messages::-webkit-scrollbar-thumb:hover {
+  background: #a8b2bd;
+}
+
+.transcript-message {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  animation: fadeIn 0.3s ease-in;
+  position: relative;
+}
+
+.transcript-message.final {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.transcript-message.interim {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  opacity: 0.8;
+}
+
+.transcript-message.thinking {
+  background: #d1ecf1;
+  border: 1px solid #bee5eb;
+  font-style: italic;
+}
+
+.transcript-message.user {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  margin-left: 2rem;
+}
+
+.transcript-message.agent {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  margin-right: 2rem;
+}
+
+.transcript-message.system {
+  background: #e2e3e5;
+  border: 1px solid #c6c8ca;
+  font-style: italic;
+  text-align: center;
+  margin: 0.5rem 1rem;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.speaker {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.timestamp {
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+.message-content {
+  font-size: 1rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.transcript-input-container {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 2px solid #e1e5e9;
+}
+
+.transcript-input-container input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: white;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.transcript-input-container input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.transcript-input-container .btn {
+  padding: 0.75rem 1.5rem;
+  min-height: auto;
+  font-size: 1rem;
+  border-radius: 12px;
+}
+
 /* Connection Form */
 .connection-form {
   margin-bottom: 1.5rem;
@@ -365,6 +559,15 @@ body {
   .control-panel {
     padding: 1.5rem;
   }
+  
+  .transcript-popup {
+    padding: 1.5rem;
+    max-height: 90vh;
+  }
+  
+  .transcript-messages {
+    max-height: 40vh;
+  }
 }
 
 @media (max-width: 640px) {
@@ -384,6 +587,15 @@ body {
   .avatar-section,
   .control-panel {
     padding: 1rem;
+  }
+  
+  .transcript-popup {
+    padding: 1rem;
+    max-height: 95vh;
+  }
+  
+  .transcript-messages {
+    max-height: 35vh;
   }
   
   .avatar-icon {

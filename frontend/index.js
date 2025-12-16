@@ -10,6 +10,8 @@ class AnimeCompanion {
     this.currentAgent = null;
     this.isConnecting = false;
     this.isConnected = false;
+    this.transcriptManager = null;
+    this.isTranscriptOpen = false;
     
     // UI Elements
     this.elements = {
@@ -29,7 +31,14 @@ class AnimeCompanion {
       statusDot: document.querySelector('.status-dot'),
       statusText: document.querySelector('.status-text'),
       loadingOverlay: document.getElementById('loading-overlay'),
-      loadingText: document.getElementById('loading-text')
+      loadingText: document.getElementById('loading-text'),
+      transcriptBtn: document.getElementById('transcript-btn'),
+      transcriptOverlay: document.getElementById('transcript-overlay'),
+      transcriptMessages: document.getElementById('transcript-messages'),
+      transcriptInput: document.getElementById('transcript-input'),
+      sendTranscriptBtn: document.getElementById('send-transcript-btn'),
+      clearTranscriptBtn: document.getElementById('clear-transcript-btn'),
+      closeTranscriptBtn: document.getElementById('close-transcript-btn')
     };
     
     this.init();
@@ -38,6 +47,11 @@ class AnimeCompanion {
   init() {
     // Initialize Agora client
     this.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+    
+    // Initialize transcript manager
+    if (window.TranscriptManager) {
+      this.transcriptManager = new TranscriptManager(this);
+    }
     
     // Bind event handlers
     this.bindEvents();
@@ -54,6 +68,18 @@ class AnimeCompanion {
     this.elements.endBtn.addEventListener('click', () => this.endConversation());
     this.elements.micBtn.addEventListener('click', () => this.toggleMicrophone());
     this.elements.cameraBtn.addEventListener('click', () => this.toggleCamera());
+    this.elements.transcriptBtn.addEventListener('click', () => this.toggleTranscript());
+    this.elements.clearTranscriptBtn.addEventListener('click', () => this.clearTranscript());
+    this.elements.sendTranscriptBtn.addEventListener('click', () => this.sendTranscriptMessage());
+    this.elements.closeTranscriptBtn.addEventListener('click', () => this.closeTranscript());
+    this.elements.transcriptInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') this.sendTranscriptMessage();
+    });
+    
+    // Close transcript when clicking outside popup
+    this.elements.transcriptOverlay.addEventListener('click', (e) => {
+      if (e.target === this.elements.transcriptOverlay) this.closeTranscript();
+    });
     
     // Agora client events
     this.client.on("user-published", (user, mediaType) => this.handleUserPublished(user, mediaType));
@@ -253,9 +279,16 @@ class AnimeCompanion {
     this.hideLoading();
     this.switchToConversationMode();
     
+    // Initialize transcript
+    if (this.transcriptManager) {
+      this.transcriptManager.clearTranscript();
+    }
+    this.addChatMessage('System', `Conversation started with ${this.elements.companionNameInput.value}`, 'system');
+    
     // Show demo message if in demo mode
     if (result.demo) {
       this.showDemoMessage(result.message);
+      this.addChatMessage('System', `Demo Mode: ${result.message}`, 'system');
     }
     
     console.log('Conversation started:', result);
@@ -270,6 +303,14 @@ class AnimeCompanion {
     this.hideLoading();
     this.switchToConnectionMode();
     this.elements.startBtn.disabled = false;
+    
+    // Close transcript overlay
+    this.closeTranscript();
+    
+    // Add disconnect message to transcript
+    if (this.elements.transcriptMessages.children.length > 0) {
+      this.addChatMessage('System', 'Conversation ended', 'system');
+    }
   }
   
   switchToConversationMode() {
@@ -359,7 +400,90 @@ class AnimeCompanion {
 
   handleStreamMessage(uid, payload) {
     console.log('Stream message from', uid, payload);
-    // Handle incoming stream messages if needed
+    
+    // Delegate to transcript manager if available
+    if (this.transcriptManager) {
+      this.transcriptManager.handleStreamMessage(uid, payload);
+    }
+  }
+  
+  // Method for transcript manager to call to update UI
+  addChatMessage(speaker, message, type = 'final') {
+    const transcriptMessages = this.elements.transcriptMessages;
+    const messageElement = document.createElement('div');
+    messageElement.className = `transcript-message ${type}`;
+    
+    const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    
+    messageElement.innerHTML = `
+      <div class="message-header">
+        <span class="speaker">${speaker}</span>
+        <span class="timestamp">${timestamp}</span>
+      </div>
+      <div class="message-content">${message}</div>
+    `;
+    
+    transcriptMessages.appendChild(messageElement);
+    
+    // Auto-scroll to bottom
+    transcriptMessages.scrollTop = transcriptMessages.scrollHeight;
+    
+    // Limit transcript history to last 100 messages for performance
+    const messages = transcriptMessages.children;
+    if (messages.length > 100) {
+      transcriptMessages.removeChild(messages[0]);
+    }
+  }
+  
+  // Transcript overlay methods
+  toggleTranscript() {
+    if (this.isTranscriptOpen) {
+      this.closeTranscript();
+    } else {
+      this.openTranscript();
+    }
+  }
+  
+  openTranscript() {
+    this.elements.transcriptOverlay.style.display = 'flex';
+    this.elements.transcriptBtn.classList.add('active');
+    this.isTranscriptOpen = true;
+    
+    // Focus input if connected
+    if (this.isConnected) {
+      setTimeout(() => {
+        this.elements.transcriptInput.focus();
+      }, 100);
+    }
+  }
+  
+  closeTranscript() {
+    this.elements.transcriptOverlay.style.display = 'none';
+    this.elements.transcriptBtn.classList.remove('active');
+    this.isTranscriptOpen = false;
+  }
+  
+  async sendTranscriptMessage() {
+    const message = this.elements.transcriptInput.value.trim();
+    if (!message || !this.isConnected) return;
+    
+    // Send via transcript manager
+    if (this.transcriptManager) {
+      const success = await this.transcriptManager.sendMessageToAI(message);
+      if (success) {
+        this.elements.transcriptInput.value = '';
+      } else {
+        console.error('Failed to send message to AI');
+      }
+    }
+  }
+  
+  clearTranscript() {
+    this.elements.transcriptMessages.innerHTML = '';
+    if (this.transcriptManager) {
+      this.transcriptManager.clearTranscript();
+    }
+    this.addChatMessage('System', 'Transcript cleared', 'system');
   }
   
   updateConnectionStatus(status, text) {
