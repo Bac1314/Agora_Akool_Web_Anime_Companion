@@ -79,29 +79,13 @@ const startConversation = async (req, res) => {
         tts: {
           vendor: process.env.MICROSOFT_TTS_VENDOR || "microsoft",
           params: {
-            key: process.env.MICROSOFT_TTS_API_KEY,
+            key: process.env.MICROSOFT_TTS_API_KEY || "",
             region: process.env.MICROSOFT_TTS_REGION || "japanwest",
-            voice_name: process.env.MICROSOFT_TTS_VOICE || "zh-CN-XiaoxiaoMultilingualNeural",
-            enable_words: false // send agent transcription even if tts fails
+            voice_name: process.env.MICROSOFT_TTS_VOICE || "zh-CN-XiaoxiaoMultilingualNeural"
+            // enable_words: false // send agent transcription even if tts fails
           },
           skipPatterns: [1, 2, 3, 4, 5, 6]
         },
-        // tts: {
-        //   vendor: "cartesia",
-        //   params: {
-        //     api_key: process.env.CARTESIA_TTS_API_KEY,
-        //     model_id: "sonic-3",
-        //     voice: { 
-        //       mode: "id",
-        //       id: process.env.CARTESIA_TTS_VOICE_ID
-        //     },
-        //     output_format: { 
-        //       container: "raw",
-        //       sample_rate: 16000
-        //     },
-        //     language: "en"
-        //   }
-        // },
         avatar: {
           vendor: "akool",
           enable: true,
@@ -119,12 +103,11 @@ const startConversation = async (req, res) => {
         },
         parameters: {
           data_channel: "datastream"
-          // transcript: {
-          //   redundant: false
-          // }
         }
       }
     };
+
+    // console.log('Agora join request body:', JSON.stringify(requestBody, null, 2));
 
     const auth = Buffer.from(`${process.env.AGORA_API_KEY}:${process.env.AGORA_API_SECRET}`).toString('base64');
     
@@ -148,8 +131,16 @@ const startConversation = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Agora API error:', error.response?.data || error.message);
-    res.status(500).json({ 
+    // console.error('Agora API error:', error.response?.data || error.message);
+
+    console.error('Agora API error:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      headers: error.response?.headers,
+      request: error.config
+    });
+
+    res.status(error.response?.status || 500).json({ 
       error: 'Failed to start conversation',
       details: error.response?.data || error.message
     });

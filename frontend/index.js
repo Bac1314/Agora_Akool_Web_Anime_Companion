@@ -173,21 +173,8 @@ class AnimeCompanion {
   async joinAgoraChannel(channelInfo) {
     // Create local tracks
     [this.localTracks.audioTrack, this.localTracks.videoTrack] = await Promise.all([
-      AgoraRTC.createMicrophoneAudioTrack({
-        encoderConfig: {
-          sampleRate: 48000,
-          stereo: true,
-          bitrate: 128,
-        }
-      }),
-      AgoraRTC.createCameraVideoTrack({
-        encoderConfig: {
-          width: 640,
-          height: 480,
-          frameRate: 30,
-          bitrateMax: 1000,
-        }
-      })
+      AgoraRTC.createMicrophoneAudioTrack(),
+      AgoraRTC.createCameraVideoTrack()
     ]);
     
     // Join channel
@@ -225,7 +212,6 @@ class AnimeCompanion {
       const errorData = await response.json();
       throw new Error(errorData.error || `HTTP ${response.status}`);
     }
-    
     return await response.json();
   }
   
@@ -358,6 +344,7 @@ class AnimeCompanion {
     }
   }
   
+  // MARK：Agora event handlers
   handleUserJoined(user) {
     console.log('User joined:', user.uid);
   }
@@ -399,7 +386,7 @@ class AnimeCompanion {
   }
 
   handleStreamMessage(uid, payload) {
-    console.log('Stream message from', uid, payload);
+    // console.log('Stream message from', uid, payload);
     
     // Delegate to transcript manager if available
     if (this.transcriptManager) {
@@ -407,7 +394,7 @@ class AnimeCompanion {
     }
   }
   
-  // Method for transcript manager to call to update UI
+  // MARK: Method for transcript manager to call to update UI
   addChatMessage(speaker, message, type = 'final') {
     const transcriptMessages = this.elements.transcriptMessages;
     const messageElement = document.createElement('div');
@@ -501,6 +488,7 @@ class AnimeCompanion {
   }
   
   updateLoadingText(text) {
+    console.log(text);
     this.elements.loadingText.textContent = text;
   }
   
